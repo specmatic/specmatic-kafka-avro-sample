@@ -1,9 +1,1 @@
-lib/io/specmatic/async/specmatic-async-core/1.0.1-SNAPSHOT/specmatic-async-core-1.0.1-20250718.101901-1.jar filter=lfs diff=lfs merge=lfs -text
-lib/io/specmatic/async/specmatic-kafka/1.0.1-SNAPSHOT/specmatic-kafka-1.0.1-20250718.101928-1.jar filter=lfs diff=lfs merge=lfs -text
-lib/io/specmatic/async/specmatic-async-core/1.0.1-SNAPSHOT/specmatic-async-core-1.0.1-20250720.032633-1.jar filter=lfs diff=lfs merge=lfs -text
-lib/io/specmatic/async/specmatic-async-core/1.0.1-SNAPSHOT/specmatic-async-core-1.0.1-20250721.055835-1.jar filter=lfs diff=lfs merge=lfs -text
-lib/io/specmatic/async/specmatic-kafka/1.0.1-SNAPSHOT/specmatic-kafka-1.0.1-20250721.055905-1.jar filter=lfs diff=lfs merge=lfs -text
-lib/io/specmatic/async/specmatic-async-core/1.0.1/specmatic-async-core-1.0.1.jar filter=lfs diff=lfs merge=lfs -text
-lib/io/specmatic/async/specmatic-kafka/1.0.1/specmatic-kafka-1.0.1.jar filter=lfs diff=lfs merge=lfs -text
-lib/io/specmatic/async/specmatic-kafka/1.0.2/specmatic-kafka-1.0.2.jar filter=lfs diff=lfs merge=lfs -text
-lib/io/specmatic/async/specmatic-async-core/1.0.2/specmatic-async-core-1.0.2.jar filter=lfs diff=lfs merge=lfs -text
+* text=auto eol=lf
