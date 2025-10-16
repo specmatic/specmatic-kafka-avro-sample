@@ -42,6 +42,44 @@ jobs:
             sleep 2
           done
 
+      - name: Wait for topic creation
+        run: |
+          echo "Waiting for kafka-init container to finish..."
+          for i in {1..60}; do
+            status=$(docker inspect -f '{{.State.Status}}' kafka-init)
+            if [ "$status" = "exited" ]; then
+              exit_code=$(docker inspect -f '{{.State.ExitCode}}' kafka-init)
+              if [ "$exit_code" = "0" ]; then
+                echo "Topic creation completed successfully."
+                break
+              else
+                echo "Topic creation failed."
+                docker logs kafka-init
+                exit 1
+              fi
+            fi
+            sleep 2
+          done
+
+      - name: Wait for schema registration
+        run: |
+          echo "Waiting for register-schemas container to finish..."
+          for i in {1..60}; do
+            status=$(docker inspect -f '{{.State.Status}}' register-schemas)
+            if [ "$status" = "exited" ]; then
+              exit_code=$(docker inspect -f '{{.State.ExitCode}}' register-schemas)
+              if [ "$exit_code" = "0" ]; then
+                echo "Schema registration completed successfully."
+                break
+              else
+                echo "Schema registration failed."
+                docker logs register-schemas
+                exit 1
+              fi
+            fi
+            sleep 2
+          done
+
       - name: Start application
         run: |
           nohup ./gradlew bootRun > app.log 2>&1 &
@@ -99,4 +137,3 @@ jobs:
       - name: Stop containers
         if: always()
         run: docker compose down -v
-
