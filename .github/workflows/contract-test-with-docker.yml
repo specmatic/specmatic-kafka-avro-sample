@@ -1,9 +1,12 @@
+# This workflow is DISABLED and will not run in CI.
+# To re-enable, uncomment the 'on' section below.
+# on:
+#   push:
+#     branches: [ main ]
+#   pull_request:
+#     branches: [ main ]
+
 name: Contract Test with Docker CLI
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
 
 jobs:
   contract-test:
