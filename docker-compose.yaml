@@ -66,6 +66,7 @@ services:
 
   register-schemas:
     image: curlimages/curl:8.13.0
+    container_name: register-schemas
     depends_on:
       - schema-registry
     networks:
