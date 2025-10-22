@@ -39,7 +39,6 @@ services:
 
   kafka-init:
     image: confluentinc/cp-kafka:latest
-    container_name: kafka-init
     depends_on:
       - broker
     networks:
@@ -66,7 +65,6 @@ services:
 
   register-schemas:
     image: curlimages/curl:8.13.0
-    container_name: register-schemas
     depends_on:
       - schema-registry
     networks:

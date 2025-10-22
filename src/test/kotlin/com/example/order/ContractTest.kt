@@ -1,7 +1,6 @@
 package com.example.order
 
 import io.specmatic.async.core.constants.AVAILABLE_SERVERS
-import io.specmatic.async.core.constants.EXAMPLES_DIR
 import io.specmatic.async.core.constants.SCHEMA_REGISTRY_KIND
 import io.specmatic.async.core.constants.SCHEMA_REGISTRY_URL
 import io.specmatic.async.core.constants.SchemaRegistryKind
