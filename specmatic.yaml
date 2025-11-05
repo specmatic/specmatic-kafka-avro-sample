@@ -2,3 +2,5 @@ sources:
   - provider: filesystem
     provides:
       - api-specs/order-service-async-avro-v3_0_0.yaml
+test:
+  validateResponseValues: false
