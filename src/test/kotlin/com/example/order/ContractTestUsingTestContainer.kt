@@ -77,7 +77,13 @@ class ContractTestUsingTestContainer {
                 "./specmatic.yaml",
                 "/usr/src/app/specmatic.yaml",
                 BindMode.READ_ONLY,
-            ).withFileSystemBind(
+            )
+            .withFileSystemBind(
+                "./specmatic-kafka-config.properties",
+                "/usr/src/app/specmatic-kafka-config.properties",
+                BindMode.READ_ONLY,
+            )
+            .withFileSystemBind(
                 "./build/reports/specmatic",
                 "/usr/src/app/build/reports/specmatic",
                 BindMode.READ_WRITE,

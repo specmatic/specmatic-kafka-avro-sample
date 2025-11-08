@@ -19,7 +19,6 @@ repositories {
         url "https://packages.confluent.io/maven/"
     }
     mavenCentral()
-    mavenLocal()
 }
 
 dependencies {
@@ -35,7 +34,7 @@ dependencies {
     implementation("io.confluent:kafka-schema-registry-client:7.9.0")
 
     testImplementation platform('org.junit:junit-bom:5.13.3')
-    testImplementation("io.specmatic.async:specmatic-kafka:1.5.4")
+    testImplementation("io.specmatic.async:specmatic-kafka:1.6.1")
     testImplementation("org.testcontainers:testcontainers:1.19.3")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
