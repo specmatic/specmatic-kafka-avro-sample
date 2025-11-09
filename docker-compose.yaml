@@ -70,6 +70,13 @@ services:
       SCHEMA_REGISTRY_KAFKASTORE_SECURITY_PROTOCOL: SASL_PLAINTEXT
       SCHEMA_REGISTRY_KAFKASTORE_SASL_MECHANISM: PLAIN
       SCHEMA_REGISTRY_KAFKASTORE_SASL_JAAS_CONFIG: org.apache.kafka.common.security.plain.PlainLoginModule required username="test" password="test-secret";
+      SCHEMA_REGISTRY_AUTHENTICATION_METHOD: BASIC
+      SCHEMA_REGISTRY_AUTHENTICATION_ROLES: admin,developer,user
+      SCHEMA_REGISTRY_AUTHENTICATION_REALM: SchemaRegistry-Props
+      SCHEMA_REGISTRY_OPTS: -Djava.security.auth.login.config=/etc/schema-registry/schema-registry-jaas.conf
+    volumes:
+      - ./schema-registry-jaas.conf:/etc/schema-registry/schema-registry-jaas.conf
+      - ./password.properties:/etc/schema-registry/password.properties
 
   register-schemas:
     image: curlimages/curl:8.13.0

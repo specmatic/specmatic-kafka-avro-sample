@@ -61,6 +61,8 @@ class ContractTestUsingTestContainer {
             .withCommand(
                 "test",
                 "--broker=$kafkaBootstrapServers",
+                "--schema-registry-username=admin",
+                "--schema-registry-password=admin-secret",
             ).withEnv(
                 mapOf(
                     SCHEMA_REGISTRY_URL to schemaRegistryUrl,

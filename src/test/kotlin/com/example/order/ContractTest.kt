@@ -2,7 +2,9 @@ package com.example.order
 
 import io.specmatic.async.core.constants.AVAILABLE_SERVERS
 import io.specmatic.async.core.constants.SCHEMA_REGISTRY_KIND
+import io.specmatic.async.core.constants.SCHEMA_REGISTRY_PASSWORD
 import io.specmatic.async.core.constants.SCHEMA_REGISTRY_URL
+import io.specmatic.async.core.constants.SCHEMA_REGISTRY_USERNAME
 import io.specmatic.async.core.constants.SchemaRegistryKind
 import io.specmatic.kafka.test.SpecmaticKafkaContractTest
 import org.junit.jupiter.api.AfterAll
@@ -32,6 +34,8 @@ class ContractTest: SpecmaticKafkaContractTest {
         System.setProperty(SCHEMA_REGISTRY_URL, schemaRegistryUrl)
         System.setProperty(SCHEMA_REGISTRY_KIND, SchemaRegistryKind.CONFLUENT.name)
         System.setProperty(AVAILABLE_SERVERS, kafkaBootstrapServers)
+        System.setProperty(SCHEMA_REGISTRY_USERNAME, "admin")
+        System.setProperty(SCHEMA_REGISTRY_PASSWORD, "admin-secret")
     }
 
     @AfterAll

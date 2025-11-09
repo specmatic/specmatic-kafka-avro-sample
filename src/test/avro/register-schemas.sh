@@ -2,8 +2,8 @@
 set -e
 
 SCHEMA_REGISTRY_URL="http://schema-registry:8085"
-SCHEMA_REGISTRY_USER="test"
-SCHEMA_REGISTRY_PASSWORD="test-secret"
+SCHEMA_REGISTRY_USER="admin"
+SCHEMA_REGISTRY_PASSWORD="admin-secret"
 
 # Wait for Schema Registry to be up
 echo "Waiting for Schema Registry to be ready..."
