@@ -79,7 +79,7 @@ services:
       - ./password.properties:/etc/schema-registry/password.properties
 
   register-schemas:
-    image: curlimages/curl:8.13.0
+    image: curlimages/curl:8.17.0
     depends_on:
       - schema-registry
     networks:
