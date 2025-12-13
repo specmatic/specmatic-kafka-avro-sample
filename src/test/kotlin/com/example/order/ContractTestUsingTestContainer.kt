@@ -16,6 +16,7 @@ import org.testcontainers.containers.ComposeContainer
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.containers.wait.strategy.LogMessageWaitStrategy
 import org.testcontainers.containers.wait.strategy.Wait
+import org.testcontainers.images.PullPolicy
 import java.io.File
 import java.time.Duration
 
@@ -70,6 +71,7 @@ class ContractTestUsingTestContainer {
                     AVAILABLE_SERVERS to kafkaBootstrapServers
                 )
             )
+            .withImagePullPolicy(PullPolicy.alwaysPull())
             .withFileSystemBind(
                 "./api-specs",
                 "/usr/src/app/api-specs",
