@@ -33,7 +33,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.os }}-${{ matrix.java }}-html-report
-          path: build/reports/specmatic/html
+          path: build/reports/specmatic/kafka/test/html
           
       - name: Upload CTRF Report
         uses: actions/upload-artifact@v4
@@ -48,5 +48,5 @@ jobs:
         uses: ctrf-io/github-test-reporter@v1
         if: always() # Run even if tests fail
         with:
-          report-path: './build/reports/specmatic/kafka/ctrf/*.json'
+          report-path: './build/reports/specmatic/kafka/test/ctrf/*.json'
       
