@@ -40,7 +40,7 @@ jobs:
         if: always() # Run even if tests fail
         with:
           name: ctrf-report
-          path: build/reports/specmatic/kafka/ctrf/*.json
+          path: build/reports/specmatic/kafka/test/ctrf/*.json
           retention-days: 5
     
       # Display CTRF test results
