@@ -1,12 +1,7 @@
 package com.example.order
 
-import io.specmatic.async.core.constants.AVAILABLE_SERVERS
-import io.specmatic.async.core.constants.SCHEMA_REGISTRY_KIND
-import io.specmatic.async.core.constants.SCHEMA_REGISTRY_PASSWORD
-import io.specmatic.async.core.constants.SCHEMA_REGISTRY_URL
-import io.specmatic.async.core.constants.SCHEMA_REGISTRY_USERNAME
-import io.specmatic.async.core.constants.SchemaRegistryKind
-import io.specmatic.kafka.test.SpecmaticKafkaContractTest
+import io.specmatic.async.constants.SchemaRegistryKind
+import io.specmatic.async.test.SpecmaticAsyncContractTest
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.TestInstance
@@ -19,7 +14,7 @@ import java.time.Duration
 
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class ContractTest: SpecmaticKafkaContractTest {
+class ContractTest: SpecmaticAsyncContractTest {
     @Value("\${spring.kafka.properties.schema.registry.url}")
     lateinit var schemaRegistryUrl: String
 

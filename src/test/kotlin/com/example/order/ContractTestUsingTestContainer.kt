@@ -58,20 +58,19 @@ class ContractTestUsingTestContainer {
     }
 
     private fun testContainer(): GenericContainer<*> {
-        return GenericContainer("specmatic/specmatic-kafka")
+        return GenericContainer("specmatic/specmatic-async-core")
             .withCommand(
                 "test",
-                "--broker=$kafkaBootstrapServers",
-                "--schema-registry-username=admin",
-                "--schema-registry-password=admin-secret",
-            ).withEnv(
-                mapOf(
-                    SCHEMA_REGISTRY_URL to schemaRegistryUrl,
-                    SCHEMA_REGISTRY_KIND to SchemaRegistryKind.CONFLUENT.name,
-                    AVAILABLE_SERVERS to kafkaBootstrapServers
-                )
+                "--verbose"
             )
-            .withImagePullPolicy(PullPolicy.alwaysPull())
+//            .withEnv(
+//                mapOf(
+//                    SCHEMA_REGISTRY_URL to schemaRegistryUrl,
+//                    SCHEMA_REGISTRY_KIND to SchemaRegistryKind.CONFLUENT.name,
+//                    AVAILABLE_SERVERS to kafkaBootstrapServers
+//                )
+//            )
+//            .withImagePullPolicy(PullPolicy.alwaysPull())
             .withFileSystemBind(
                 "./api-specs",
                 "/usr/src/app/api-specs",
@@ -82,16 +81,16 @@ class ContractTestUsingTestContainer {
                 "/usr/src/app/specmatic.yaml",
                 BindMode.READ_ONLY,
             )
-            .withFileSystemBind(
-                "./specmatic-kafka-config.properties",
-                "/usr/src/app/specmatic-kafka-config.properties",
-                BindMode.READ_ONLY,
-            )
+//            .withFileSystemBind(
+//                "./specmatic-kafka-config.properties",
+//                "/usr/src/app/specmatic-kafka-config.properties",
+//                BindMode.READ_ONLY,
+//            )
             .withFileSystemBind(
                 "./build/reports/specmatic",
                 "/usr/src/app/build/reports/specmatic",
                 BindMode.READ_WRITE,
-            ).waitingFor(Wait.forLogMessage(".*The coverage report is generated.*", 1))
+            ).waitingFor(Wait.forLogMessage(".*Failed:.*", 1))
             .withNetworkMode("host")
             .withLogConsumer { print(it.utf8String) }
     }
