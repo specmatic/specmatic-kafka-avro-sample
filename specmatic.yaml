@@ -3,9 +3,9 @@ contracts:
   - provides:
       - specs:
           - api-specs/order-service-async-avro-v3_0_0.yaml
-        specType: ASYNCAPI
+        specType: asyncapi
         config:
-          schemaRegistryProps:
+          schemaRegistry:
             url: http://localhost:8085
             kind: CONFLUENT
             username: admin
@@ -14,12 +14,12 @@ contracts:
           servers:
             - host: localhost:9092
               protocol: kafka
-              adminProps:
+              adminCredentials:
                 security.protocol: SASL_PLAINTEXT
                 sasl.mechanism: PLAIN
                 sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule required username="test" password="test-secret";
-              clientProps:
-                producerProps:
+              client:
+                producer:
                   basic.auth.credentials.source: USER_INFO
                   basic.auth.user.info: admin:admin-secret
 test:

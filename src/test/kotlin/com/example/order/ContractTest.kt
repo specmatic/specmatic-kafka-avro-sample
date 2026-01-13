@@ -1,11 +1,9 @@
 package com.example.order
 
-import io.specmatic.async.constants.SchemaRegistryKind
 import io.specmatic.async.test.SpecmaticAsyncContractTest
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.TestInstance
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.context.SpringBootTest
 import org.testcontainers.containers.ComposeContainer
 import org.testcontainers.containers.wait.strategy.LogMessageWaitStrategy
@@ -15,22 +13,11 @@ import java.time.Duration
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ContractTest: SpecmaticAsyncContractTest {
-    @Value("\${spring.kafka.properties.schema.registry.url}")
-    lateinit var schemaRegistryUrl: String
-
-    @Value("\${spring.kafka.bootstrap-servers}")
-    lateinit var kafkaBootstrapServers: String
-
     private val schemaRegistry = schemaRegistry()
 
     @BeforeAll
     fun setup() {
         schemaRegistry.start()
-        System.setProperty(SCHEMA_REGISTRY_URL, schemaRegistryUrl)
-        System.setProperty(SCHEMA_REGISTRY_KIND, SchemaRegistryKind.CONFLUENT.name)
-        System.setProperty(AVAILABLE_SERVERS, kafkaBootstrapServers)
-        System.setProperty(SCHEMA_REGISTRY_USERNAME, "admin")
-        System.setProperty(SCHEMA_REGISTRY_PASSWORD, "admin-secret")
     }
 
     @AfterAll

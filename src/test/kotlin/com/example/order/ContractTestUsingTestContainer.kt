@@ -1,15 +1,10 @@
 package com.example.order
 
-import io.specmatic.async.core.constants.AVAILABLE_SERVERS
-import io.specmatic.async.core.constants.SCHEMA_REGISTRY_KIND
-import io.specmatic.async.core.constants.SCHEMA_REGISTRY_URL
-import io.specmatic.async.core.constants.SchemaRegistryKind
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.context.SpringBootTest
 import org.testcontainers.containers.BindMode
 import org.testcontainers.containers.ComposeContainer
@@ -28,12 +23,6 @@ class ContractTestUsingTestContainer {
         private const val REGISTER_SCHEMAS_SERVICE = "register-schemas"
         private const val SCHEMA_REGISTERED_REGEX = ".*(?i)schemas registered.*"
     }
-
-    @Value("\${spring.kafka.properties.schema.registry.url}")
-    lateinit var schemaRegistryUrl: String
-
-    @Value("\${spring.kafka.bootstrap-servers}")
-    lateinit var kafkaBootstrapServers: String
 
     private val schemaRegistry = schemaRegistry()
 
@@ -58,19 +47,12 @@ class ContractTestUsingTestContainer {
     }
 
     private fun testContainer(): GenericContainer<*> {
-        return GenericContainer("specmatic/specmatic-async-core")
+        return GenericContainer("specmatic/specmatic-async")
             .withCommand(
                 "test",
                 "--verbose"
             )
-//            .withEnv(
-//                mapOf(
-//                    SCHEMA_REGISTRY_URL to schemaRegistryUrl,
-//                    SCHEMA_REGISTRY_KIND to SchemaRegistryKind.CONFLUENT.name,
-//                    AVAILABLE_SERVERS to kafkaBootstrapServers
-//                )
-//            )
-//            .withImagePullPolicy(PullPolicy.alwaysPull())
+            .withImagePullPolicy(PullPolicy.alwaysPull())
             .withFileSystemBind(
                 "./api-specs",
                 "/usr/src/app/api-specs",
@@ -81,11 +63,6 @@ class ContractTestUsingTestContainer {
                 "/usr/src/app/specmatic.yaml",
                 BindMode.READ_ONLY,
             )
-//            .withFileSystemBind(
-//                "./specmatic-kafka-config.properties",
-//                "/usr/src/app/specmatic-kafka-config.properties",
-//                BindMode.READ_ONLY,
-//            )
             .withFileSystemBind(
                 "./build/reports/specmatic",
                 "/usr/src/app/build/reports/specmatic",
