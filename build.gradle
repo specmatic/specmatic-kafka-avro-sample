@@ -34,7 +34,7 @@ dependencies {
     implementation("io.confluent:kafka-schema-registry-client:7.9.5")
 
     testImplementation platform('org.junit:junit-bom:5.14.2')
-    testImplementation("io.specmatic.async:specmatic-async:2.2.3")
+    testImplementation("io.specmatic.async:specmatic-async:2.2.4")
     testImplementation("org.testcontainers:testcontainers:1.19.3")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
