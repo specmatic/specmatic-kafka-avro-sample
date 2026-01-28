@@ -13,17 +13,17 @@ version = '1.0-SNAPSHOT'
 
 repositories {
     maven {
-        url "https://repo.specmatic.io/releases"
-    }
-    maven {
         url "https://packages.confluent.io/maven/"
     }
     mavenCentral()
+    mavenLocal()
 }
 
 dependencies {
     implementation ('org.springframework.boot:spring-boot-starter')
-    implementation 'org.springframework.kafka:spring-kafka:3.3.12'
+    implementation ('org.springframework.kafka:spring-kafka:3.3.12') {
+        exclude(group: "org.lz4", module: "lz4-java")
+    }
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.21.0'
     implementation 'com.fasterxml.jackson.core:jackson-core:2.21.0'
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.21'
@@ -34,9 +34,13 @@ dependencies {
     implementation("io.confluent:kafka-schema-registry-client:7.9.5")
 
     testImplementation platform('org.junit:junit-bom:5.14.2')
-    testImplementation("io.specmatic.async:specmatic-async:2.2.5")
+    testImplementation("io.specmatic.enterprise:executable:${project.ext['specmaticEnterpriseVersion']}")
     testImplementation("org.testcontainers:testcontainers:1.19.3")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+}
+
+configurations.implementation {
+    exclude(group: "org.lz4", module: "lz4-java")
 }
 
 test {

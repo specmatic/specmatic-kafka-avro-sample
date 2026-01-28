@@ -1,6 +1,6 @@
 package com.example.order
 
-import io.specmatic.async.test.SpecmaticAsyncContractTest
+import io.specmatic.enterprise.SpecmaticContractTest
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.TestInstance
@@ -12,7 +12,7 @@ import java.time.Duration
 
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class ContractTest: SpecmaticAsyncContractTest {
+class ContractTest: SpecmaticContractTest {
     private val schemaRegistry = schemaRegistry()
 
     @BeforeAll
