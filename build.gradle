@@ -13,12 +13,10 @@ version = '1.0-SNAPSHOT'
 
 repositories {
     maven {
-        url "https://repo.specmatic.io/releases"
-    }
-    maven {
         url "https://packages.confluent.io/maven/"
     }
     mavenCentral()
+    mavenLocal()
 }
 
 dependencies {
@@ -34,7 +32,7 @@ dependencies {
     implementation("io.confluent:kafka-schema-registry-client:7.9.5")
 
     testImplementation platform('org.junit:junit-bom:5.14.2')
-    testImplementation("io.specmatic.async:specmatic-async:2.2.4")
+    testImplementation("io.specmatic.enterprise:executable:${project.ext['specmaticEnterpriseVersion']}")
     testImplementation("org.testcontainers:testcontainers:1.19.3")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
