@@ -46,37 +46,17 @@ class ContractTestUsingTestContainer {
         schemaRegistry.stop()
     }
 
-    private fun testContainer(): GenericContainer<*> {
-        return GenericContainer("specmatic/specmatic-async")
-            .withCommand(
-                "test",
-                "--verbose"
-            )
-            .withImagePullPolicy(PullPolicy.alwaysPull())
-            .withFileSystemBind(
-                "./api-specs",
-                "/usr/src/app/api-specs",
-                BindMode.READ_ONLY
-            )
-            .withFileSystemBind(
-                "./specmatic.yaml",
-                "/usr/src/app/specmatic.yaml",
-                BindMode.READ_ONLY,
-            )
-            .withFileSystemBind(
-                "./build/reports/specmatic",
-                "/usr/src/app/build/reports/specmatic",
-                BindMode.READ_WRITE,
-            ).waitingFor(Wait.forLogMessage(".*Failed:.*", 1))
-            .withNetworkMode("host")
-            .withLogConsumer { print(it.utf8String) }
-    }
+    private val testContainer: GenericContainer<*> = GenericContainer("specmatic/enterprise")
+        .withCommand("test")
+        .withImagePullPolicy(PullPolicy.alwaysPull())
+        .withFileSystemBind("./", "/usr/src/app", BindMode.READ_WRITE)
+        .waitingFor(Wait.forLogMessage(".*Generating CTRF report.*", 1))
+        .withNetworkMode("host")
+        .withLogConsumer { print(it.utf8String) }
 
     @Test
     fun specmaticContractTest() {
-        val testContainer = testContainer()
         testContainer.start()
-        val hasSucceeded = testContainer.logs.contains("Result: FAILED").not()
-        assertThat(hasSucceeded).isTrue()
+        assertThat(testContainer.logs).doesNotContain("Result: FAILED")
     }
 }
