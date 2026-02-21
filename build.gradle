@@ -13,9 +13,6 @@ version = '1.0-SNAPSHOT'
 
 repositories {
     maven {
-        url "https://repo.specmatic.io/releases"
-    }
-    maven {
         url "https://packages.confluent.io/maven/"
     }
     mavenCentral()
@@ -23,7 +20,9 @@ repositories {
 
 dependencies {
     implementation ('org.springframework.boot:spring-boot-starter')
-    implementation 'org.springframework.kafka:spring-kafka:3.3.13'
+    implementation ('org.springframework.kafka:spring-kafka:3.3.12'){
+            exclude group: 'org.lz4', module: 'lz4-java'
+        }
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.21.0'
     implementation 'com.fasterxml.jackson.core:jackson-core:2.21.0'
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.21'
@@ -34,7 +33,7 @@ dependencies {
     implementation("io.confluent:kafka-schema-registry-client:7.9.5")
 
     testImplementation platform('org.junit:junit-bom:5.14.3')
-    testImplementation("io.specmatic.async:specmatic-async:2.2.5")
+    testImplementation("io.specmatic.enterprise:executable:$specmaticEnterpriseVersion")
     testImplementation("org.testcontainers:testcontainers:1.19.3")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
@@ -61,4 +60,8 @@ tasks.withType(JavaCompile).configureEach {
 
 configurations.all {
     exclude group: 'ch.qos.logback', module: 'logback-classic'
+
+    resolutionStrategy.capabilitiesResolution.withCapability('org.lz4:lz4-java') {
+        select('at.yawk.lz4:lz4-java:1.10.3')
+    }
 }
