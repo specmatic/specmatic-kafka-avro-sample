@@ -10,6 +10,11 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
     volumes:
       - /var/lib/zookeeper
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c 'echo > /dev/tcp/localhost/2181'"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
 
   broker:
     image: confluentinc/cp-kafka:latest
@@ -40,24 +45,37 @@ services:
     volumes:
       - ./docker-config/jaas.conf:/etc/kafka/jaas.conf
     depends_on:
-      - zookeeper
+      zookeeper:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c 'echo > /dev/tcp/localhost/9093'"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
 
   kafka-init:
     image: confluentinc/cp-kafka:latest
     depends_on:
-      - broker
+      broker:
+        condition: service_healthy
     networks:
       - avro-app-network
     volumes:
       - ./docker-config/create-topics.sh:/create-topics.sh
     entrypoint: [ "sh", "/create-topics.sh" ]
+    healthcheck:
+      test: ["CMD-SHELL", "kafka-topics --bootstrap-server broker:9093 --command-config /tmp/client.properties --topic new-orders --describe > /dev/null 2>&1 && kafka-topics --bootstrap-server broker:9093 --command-config /tmp/client.properties --topic wip-orders --describe > /dev/null 2>&1"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
 
   schema-registry:
     image: confluentinc/cp-schema-registry:7.9.5
     hostname: schema-registry
     container_name: schema-registry
     depends_on:
-      - broker
+      broker:
+        condition: service_healthy
     networks:
       - avro-app-network
     ports:
@@ -77,11 +95,17 @@ services:
     volumes:
       - ./docker-config/schema-registry-jaas.conf:/etc/schema-registry/schema-registry-jaas.conf
       - ./docker-config/password.properties:/etc/schema-registry/password.properties
+    healthcheck:
+      test: ["CMD-SHELL", "curl -u admin:admin-secret -s http://localhost:8085/subjects > /dev/null"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
 
   register-schemas:
     image: curlimages/curl:8.18.0
     depends_on:
-      - schema-registry
+      schema-registry:
+        condition: service_healthy
     networks:
       - avro-app-network
     user: root
@@ -94,6 +118,11 @@ services:
         sh -c /usr/src/app/schemas/register-schemas.sh
     volumes:
       - ./src/test/avro:/usr/src/app/schemas
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f -u admin:admin-secret -s http://schema-registry:8085/subjects/new-orders-value/versions/latest > /dev/null && curl -f -u admin:admin-secret -s http://schema-registry:8085/subjects/wip-orders-value/versions/latest > /dev/null"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
 
 networks:
   avro-app-network:
