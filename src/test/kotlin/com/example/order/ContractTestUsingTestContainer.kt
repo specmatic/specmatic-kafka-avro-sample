@@ -47,7 +47,7 @@ class ContractTestUsingTestContainer {
     }
 
     private fun testContainer(): GenericContainer<*> {
-        return GenericContainer("specmatic/specmatic-async")
+        return GenericContainer("specmatic/enterprise")
             .withCommand(
                 "test",
                 "--verbose"
@@ -75,8 +75,12 @@ class ContractTestUsingTestContainer {
     @Test
     fun specmaticContractTest() {
         val testContainer = testContainer()
-        testContainer.start()
-        val hasSucceeded = testContainer.logs.contains("Result: FAILED").not()
-        assertThat(hasSucceeded).isTrue()
+        try {
+            testContainer.start()
+            val hasSucceeded = testContainer.logs.contains("Result: FAILED").not()
+            assertThat(hasSucceeded).isTrue()
+        } finally {
+            testContainer.stop()
+        }
     }
 }
