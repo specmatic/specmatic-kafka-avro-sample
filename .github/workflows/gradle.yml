@@ -27,7 +27,7 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Build BFF project with Gradle
+      - name: Build project with Gradle
         run: ./gradlew build
 
       - name: Upload HTML Test Report
