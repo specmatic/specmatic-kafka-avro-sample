@@ -38,7 +38,7 @@ services:
     ports:
       - "9092:9092"
     volumes:
-      - ./jaas.conf:/etc/kafka/jaas.conf
+      - ./docker-config/jaas.conf:/etc/kafka/jaas.conf
     depends_on:
       - zookeeper
 
@@ -49,7 +49,7 @@ services:
     networks:
       - avro-app-network
     volumes:
-      - ./create-topics.sh:/create-topics.sh
+      - ./docker-config/create-topics.sh:/create-topics.sh
     entrypoint: [ "sh", "/create-topics.sh" ]
 
   schema-registry:
@@ -75,8 +75,8 @@ services:
       SCHEMA_REGISTRY_AUTHENTICATION_REALM: SchemaRegistry-Props
       SCHEMA_REGISTRY_OPTS: -Djava.security.auth.login.config=/etc/schema-registry/schema-registry-jaas.conf
     volumes:
-      - ./schema-registry-jaas.conf:/etc/schema-registry/schema-registry-jaas.conf
-      - ./password.properties:/etc/schema-registry/password.properties
+      - ./docker-config/schema-registry-jaas.conf:/etc/schema-registry/schema-registry-jaas.conf
+      - ./docker-config/password.properties:/etc/schema-registry/password.properties
 
   register-schemas:
     image: curlimages/curl:8.18.0
