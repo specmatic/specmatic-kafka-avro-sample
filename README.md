@@ -6,7 +6,7 @@
 
 This project demonstrates **contract-driven development** using your Avro schemas for asynchronous microservices communication. It showcases how [AsyncAPI specification](https://www.asyncapi.com/en) can be used in conjunction with your Avro schemas to thoroughly contract test your EDA.
 
-![Architecture Diagram](avro-sample-architecture.png)
+![Architecture Diagram](assets/avro-sample-architecture.png)
 
 The diagram covers an order processing flow between `checkout-service` and `order-service` communicating through Kafka topics with Avro serialization for the payloads.
 
@@ -33,7 +33,7 @@ components:
 - Java 17+
 - Docker & Docker Compose
 
-![Test Architecture Diagram](avro-sample-test-architecture.png)
+![Test Architecture Diagram](assets/avro-sample-test-architecture.png)
 
 The `order-service` is the system under test in our case.
 
@@ -46,10 +46,10 @@ docker compose pull
 ./gradlew clean test
 ```
 
-You can also run the [contract test](src%2Ftest%2Fkotlin%2Fcom%2Fexample%2Forder%2FContractTest.kt) from your IDE (Please run `docker compose pull` before running tests). The contract test makes use of `[testcontainers](https://testcontainers.com/)` to set up test environment.
+You can also run the [contract test](src%2Ftest%2Fkotlin%2Fcom%2Fexample%2Forder%2FContractTest.kt) from your IDE (Please run `docker compose pull` before running tests). The contract test makes use of [testcontainers](https://testcontainers.com/) to set up test environment.
 
 #### Test Configuration
-We only need to setup below properties in the [contract test](src%2Ftest%2Fkotlin%2Fcom%2Fexample%2Forder%2FContractTest.kt).
+We only need to set up below properties in the [contract test](src%2Ftest%2Fkotlin%2Fcom%2Fexample%2Forder%2FContractTest.kt).
 ```properties
 SCHEMA_REGISTRY_URL=http://localhost:8085
 SCHEMA_REGISTRY_KIND=CONFLUENT
@@ -77,20 +77,16 @@ Wait for the application to start and then run the following command to execute 
 
 ```bash
 docker run --network avro-app-network \
+       -e SCHEMA_REGISTRY_URL=http://schema-registry:8085 \
+       -e KAFKA_BROKER=broker:9093 \
        -v "$PWD/specmatic.yaml:/usr/src/app/specmatic.yaml" \
-       -v "$PWD/specmatic-kafka-config.properties:/usr/src/app/specmatic-kafka-config.properties" \
        -v "$PWD/api-specs:/usr/src/app/api-specs" \
        -v "$PWD/build:/usr/src/app/build" \
-       --rm specmatic/specmatic-kafka test \
-       --broker=broker:9093 \
-       --schema-registry-url=http://schema-registry:8085 \
-       --schema-registry-kind=CONFLUENT \
-       --schema-registry-username=admin \
-       --schema-registry-password=admin-secret
+       --rm specmatic/enterprise test 
 ```
 
 #### Stop the application
-Stop the application by stopping the `./gradle bootRun` process using Ctrl + C
+Stop the application by stopping the `./gradlew bootRun` process using Ctrl + C
 
 #### Stop the containers 
 ```bash

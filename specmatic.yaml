@@ -12,12 +12,12 @@ systemUnderTest:
       asyncapi:
         type: test
         schemaRegistry:
-          url: http://localhost:8085
+          url: ${SCHEMA_REGISTRY_URL:http://localhost:8085}
           kind: CONFLUENT
           username: admin
           password: admin-secret
         servers:
-          - host: localhost:9092
+          - host: ${KAFKA_BROKER:localhost:9092}
             protocol: kafka
             adminCredentials:
               security.protocol: SASL_PLAINTEXT

@@ -22,6 +22,7 @@ class ContractTestUsingTestContainer {
         private val DOCKER_COMPOSE_FILE = File("docker-compose.yaml")
         private const val REGISTER_SCHEMAS_SERVICE = "register-schemas"
         private const val SCHEMA_REGISTERED_REGEX = ".*(?i)schemas registered.*"
+        private const val AVRO_APP_NETWORK = "avro-app-network"
     }
 
     private val schemaRegistry = schemaRegistry()
@@ -49,8 +50,7 @@ class ContractTestUsingTestContainer {
     private fun testContainer(): GenericContainer<*> {
         return GenericContainer("specmatic/enterprise")
             .withCommand(
-                "test",
-                "--verbose"
+                "test"
             )
             .withImagePullPolicy(PullPolicy.alwaysPull())
             .withFileSystemBind(
@@ -67,8 +67,14 @@ class ContractTestUsingTestContainer {
                 "./build/reports/specmatic",
                 "/usr/src/app/build/reports/specmatic",
                 BindMode.READ_WRITE,
-            ).waitingFor(Wait.forLogMessage(".*Failed:.*", 1))
-            .withNetworkMode("host")
+            )
+            .withEnv("SCHEMA_REGISTRY_URL", "http://schema-registry:8085")
+            .withEnv("KAFKA_BROKER", "broker:9093")
+            .waitingFor(
+                Wait.forLogMessage(".*Tests run:.*", 1)
+                    .withStartupTimeout(Duration.ofMinutes(3))
+            )
+            .withNetworkMode(AVRO_APP_NETWORK)
             .withLogConsumer { print(it.utf8String) }
     }
 
@@ -77,8 +83,8 @@ class ContractTestUsingTestContainer {
         val testContainer = testContainer()
         try {
             testContainer.start()
-            val hasSucceeded = testContainer.logs.contains("Result: FAILED").not()
-            assertThat(hasSucceeded).isTrue()
+            val hasSucceeded = testContainer.logs.contains("Failures: 0, Errors: 0")
+            assertThat(hasSucceeded).withFailMessage("Contract test failed!").isTrue()
         } finally {
             testContainer.stop()
         }
