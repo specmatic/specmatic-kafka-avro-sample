@@ -61,36 +61,21 @@ AVAILABLE_SERVERS=localhost:9092
 This will help you understand all the independent components involved in running the app, its dependencies and the contract test itself.
 
 #### Run the application 
+1. Pull the dependencies for the application and the test environment:
 ```bash
-# 1. Pull dependencies
-docker compose pull
-
-# 2. Run the dependencies
-docker compose up -d
-
-# 3. Run the application
-./gradlew bootRun
+docker compose -f docker-compose-test.yaml pull
 ```
 
 #### Run the contract tests
-Wait for the application to start and then run the following command to execute the contract tests using Specmatic:
+2. Build and start dependencies + order-service. Once the order-service has started, run the contract tests using Specmatic:
 
 ```bash
-docker run --network avro-app-network \
-       -e SCHEMA_REGISTRY_URL=http://schema-registry:8085 \
-       -e KAFKA_BROKER=broker:9093 \
-       -v "$PWD/specmatic.yaml:/usr/src/app/specmatic.yaml" \
-       -v "$PWD/api-specs:/usr/src/app/api-specs" \
-       -v "$PWD/build:/usr/src/app/build" \
-       --rm specmatic/enterprise test 
+docker compose -f docker-compose-test.yaml up --build -d
 ```
-
-#### Stop the application
-Stop the application by stopping the `./gradlew bootRun` process using Ctrl + C
 
 #### Stop the containers 
 ```bash
-docker compose down -v
+docker compose -f docker-compose-test.yaml down -v --remove-orphans
 ```
 
 ### What all are we testing with Specmatic Contract Test:
