@@ -60,20 +60,19 @@ AVAILABLE_SERVERS=localhost:9092
 
 This will help you understand all the independent components involved in running the app, its dependencies and the contract test itself.
 
-#### Run the application 
+#### Run the contract tests
 1. Pull the dependencies for the application and the test environment:
 ```bash
 docker compose -f docker-compose-test.yaml pull
 ```
 
-#### Run the contract tests
 2. Build and start dependencies + order-service. Once the order-service has started, run the contract tests using Specmatic:
 
 ```bash
 docker compose -f docker-compose-test.yaml up --build -d
 ```
 
-#### Stop the containers 
+3. Stop the containers 
 ```bash
 docker compose -f docker-compose-test.yaml down -v --remove-orphans
 ```
