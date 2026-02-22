@@ -8,9 +8,6 @@ plugins {
     id("com.github.davidmc24.gradle.plugin.avro") version "1.9.1"
 }
 
-group = 'io.specmatic'
-version = '1.0-SNAPSHOT'
-
 repositories {
     maven {
         url "https://packages.confluent.io/maven/"
