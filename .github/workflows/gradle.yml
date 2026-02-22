@@ -67,6 +67,9 @@ jobs:
           distribution: 'temurin'
           java-version: 17
 
+      - name: Assemble project for Docker image
+        run: ./gradlew assemble
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -78,9 +81,6 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: specmaticdemo/${{ github.event.repository.name }}
-
-      - name: Assemble project for Docker image
-        run: ./gradlew assemble
 
       - name: Build and push Docker image (multi-platform)
         uses: docker/build-push-action@v6
