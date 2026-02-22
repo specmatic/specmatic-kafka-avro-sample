@@ -53,7 +53,7 @@ jobs:
 
   docker:
     if: github.ref == 'refs/heads/main'
-    needs: buildAndTest
+    needs: build
     runs-on: ubuntu-latest
     permissions:
       contents: read
