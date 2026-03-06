@@ -32,7 +32,7 @@ class OrderService(
             .setId(orderRequest.id)
             .setStatus(OrderStatus.PROCESSING)
             .build()
-        kafkaTemplate.send(WIP_ORDERS_TOPIC, orderToProcess)
+        kafkaTemplate.send(WIP_ORDERS_TOPIC, orderRequest.id.toString(), orderToProcess)
         println("[$serviceName] Sent message to topic $WIP_ORDERS_TOPIC - $orderToProcess")
     }
 }
