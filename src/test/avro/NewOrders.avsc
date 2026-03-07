@@ -16,9 +16,23 @@
           "name": "Item",
           "fields": [
             { "name": "id", "type": "int" },
-            { "name": "name", "type": "string" },
+            {
+                "name": "name",
+                "type": "string",
+                "specmaticDataConstraints": {
+                    "minLength": 2,
+                    "maxLength": 10,
+                    "regex": "^[A-Za-z]{2,10}$"
+                }
+            },
             { "name": "quantity", "type": "int" },
-            { "name": "price", "type": "int" }
+            {
+                "name": "price",
+                "type": "int",
+                "specmaticDataConstraints": {
+                    "minimum": 1000
+                }
+            }
           ]
         }
       }

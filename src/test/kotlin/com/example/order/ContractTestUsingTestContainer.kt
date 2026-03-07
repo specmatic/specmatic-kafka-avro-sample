@@ -52,7 +52,7 @@ class ContractTestUsingTestContainer {
             .withCommand(
                 "test"
             )
-            .withImagePullPolicy(PullPolicy.alwaysPull())
+//            .withImagePullPolicy(PullPolicy.alwaysPull())
             .withFileSystemBind(
                 "./api-specs",
                 "/usr/src/app/api-specs",
