@@ -19,7 +19,7 @@
     "topic": "wip-orders",
     "key": 2,
     "payload": {
-      "id": 2,
+      "id": "$match(exact: 2)",
       "status": "PROCESSING"
     }
   }
