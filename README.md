@@ -63,18 +63,18 @@ This will help you understand all the independent components involved in running
 #### Run the contract tests
 1. Pull the dependencies for the application and the test environment:
 ```bash
-docker compose -f docker-compose-test.yaml pull
+docker compose --profile test pull
 ```
 
 2. Build and start dependencies + order-service. Once the order-service has started, run the contract tests using Specmatic:
 
 ```bash
-docker compose -f docker-compose-test.yaml up --build -d
+docker compose --profile test up --build -d
 ```
 
 3. Stop the containers 
 ```bash
-docker compose -f docker-compose-test.yaml down -v --remove-orphans
+docker compose --profile test down -v --remove-orphans
 ```
 
 ### What all are we testing with Specmatic Contract Test:
@@ -96,7 +96,7 @@ src/main/avro/
 ```
 
 ### Registration Process
-Schemas are automatically registered during test setup via `register-schemas.sh` script, ensuring tests run against the actual schema registry.
+Schemas are automatically registered during test setup via `register-schema.sh` script, ensuring tests run against the actual schema registry.
 
 ## Business Impact
 
