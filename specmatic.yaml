@@ -27,8 +27,5 @@ systemUnderTest:
               producer:
                 basic.auth.credentials.source: USER_INFO
                 basic.auth.user.info: admin:admin-secret
-specmatic:
-  governance:
-    report:
-      formats:
-        - ctrf
+    settings:
+      strictMode: true

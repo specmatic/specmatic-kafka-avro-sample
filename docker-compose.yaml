@@ -70,7 +70,7 @@ services:
       retries: 20
 
   schema-registry:
-    image: confluentinc/cp-schema-registry:7.9.6
+    image: confluentinc/cp-schema-registry:latest
     hostname: schema-registry
     container_name: schema-registry
     depends_on:
@@ -96,7 +96,7 @@ services:
       - ./docker-config/schema-registry-jaas.conf:/etc/schema-registry/schema-registry-jaas.conf
       - ./docker-config/password.properties:/etc/schema-registry/password.properties
     healthcheck:
-      test: ["CMD-SHELL", "curl -u admin:admin-secret -s http://localhost:8085/subjects > /dev/null"]
+      test: ["CMD-SHELL", "curl -f -u admin:admin-secret -s http://localhost:8085/subjects > /dev/null"]
       interval: 5s
       timeout: 5s
       retries: 20
