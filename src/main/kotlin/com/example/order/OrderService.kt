@@ -27,8 +27,14 @@ class OrderService(
     @KafkaListener(topics = [NEW_ORDERS_TOPIC])
     fun placeOrder(record: ConsumerRecord<String, OrderRequest>) {
         val orderRequest = record.value()
-        validateOrderRequest(orderRequest)
         println("[$serviceName] Received message on topic $NEW_ORDERS_TOPIC - $orderRequest")
+
+        try {
+            validateOrderRequest(orderRequest)
+        } catch (e: IllegalArgumentException) {
+            println("[$serviceName] Order request id: ${orderRequest.id} rejected: ${e.message}")
+            throw e
+        }
 
         val orderToProcess = OrderToProcess.newBuilder()
             .setId(orderRequest.id)
