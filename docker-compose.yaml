@@ -102,7 +102,7 @@ services:
       retries: 20
 
   register-schemas:
-    image: curlimages/curl:8.18.0
+    image: curlimages/curl:8.19.0
     depends_on:
       schema-registry:
         condition: service_healthy
