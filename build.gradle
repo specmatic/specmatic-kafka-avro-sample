@@ -62,6 +62,6 @@ configurations.all {
     exclude group: 'ch.qos.logback', module: 'logback-classic'
 
     resolutionStrategy.capabilitiesResolution.withCapability('org.lz4:lz4-java') {
-        select('at.yawk.lz4:lz4-java:1.10.4')
+        select('at.yawk.lz4:lz4-java:1.11.0')
     }
 }
