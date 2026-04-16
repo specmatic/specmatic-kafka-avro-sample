@@ -8,12 +8,19 @@ plugins {
     id("com.github.davidmc24.gradle.plugin.avro") version "1.9.1"
 }
 
+def snapshotRepoUrl = project.findProperty('snapshotRepoUrl')
+
 repositories {
     mavenLocal()
     maven {
         url "https://packages.confluent.io/maven/"
     }
     mavenCentral()
+    if (snapshotRepoUrl) {
+        maven {
+            url = uri(snapshotRepoUrl)
+        }
+    }
 }
 
 dependencies {
