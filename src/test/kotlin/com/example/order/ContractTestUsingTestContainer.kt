@@ -83,7 +83,7 @@ class ContractTestUsingTestContainer {
         val testContainer = testContainer()
         try {
             testContainer.start()
-            val hasSucceeded = testContainer.logs.contains("Failures: 0, Errors: 0")
+            val hasSucceeded = testContainer.logs.contains("Failures: 0, WIP: 0, Errors: 0")
             assertThat(hasSucceeded).withFailMessage("Contract test failed!").isTrue()
         } finally {
             testContainer.stop()
