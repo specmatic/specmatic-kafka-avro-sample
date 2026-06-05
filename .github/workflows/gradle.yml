@@ -55,13 +55,13 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-            
+
           mkdir -p ~/.specmatic
-            
-          curl -L --fail --retry 3 --retry-delay 2 \
+
+          curl -L --fail --retry 10 --retry-delay 30 \
             "${ENTERPRISE_ARTIFACT_URL}" \
             -o ~/.specmatic/specmatic-enterprise.jar
-            
+
           mvn install:install-file \
             -Dfile="$HOME/.specmatic/specmatic-enterprise.jar" \
             -DgroupId=io.specmatic.enterprise \
@@ -69,7 +69,7 @@ jobs:
             -Dversion="${ENTERPRISE_VERSION}" \
             -Dpackaging=jar \
             -DgeneratePom=true
-            
+
           echo "Installed Enterprise artifact into local Maven"
 
       - name: Build project with Gradle
@@ -83,7 +83,7 @@ jobs:
         with:
           name: ${{ matrix.os }}-${{ matrix.java }}-html-report
           path: build/reports/specmatic/async/test/html
-          
+
       - name: Upload CTRF Report
         uses: actions/upload-artifact@v6
         if: always() # Run even if tests fail
@@ -91,7 +91,7 @@ jobs:
           name: ctrf-report
           path: ${{ env.CTRF_REPORT_PATH }}
           retention-days: 5
-    
+
       # Display CTRF test results
       - name: Publish Test Results
         uses: ctrf-io/github-test-reporter@v1
