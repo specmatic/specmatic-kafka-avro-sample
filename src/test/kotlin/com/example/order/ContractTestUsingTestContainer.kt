@@ -1,14 +1,19 @@
 package com.example.order
 
+import io.specmatic.testcontainers.UnhealthyContainerHealthcheckLogger
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.extension.RegisterExtension
+import org.slf4j.LoggerFactory
 import org.springframework.boot.test.context.SpringBootTest
+import org.testcontainers.DockerClientFactory
 import org.testcontainers.containers.BindMode
 import org.testcontainers.containers.ComposeContainer
 import org.testcontainers.containers.GenericContainer
+import org.testcontainers.containers.output.Slf4jLogConsumer
 import org.testcontainers.containers.wait.strategy.LogMessageWaitStrategy
 import org.testcontainers.containers.wait.strategy.Wait
 import org.testcontainers.images.PullPolicy
@@ -19,10 +24,15 @@ import java.time.Duration
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ContractTestUsingTestContainer {
     companion object {
+        private val logger = LoggerFactory.getLogger(ContractTestUsingTestContainer::class.java)
         private val DOCKER_COMPOSE_FILE = File("docker-compose.yaml")
         private const val REGISTER_SCHEMAS_SERVICE = "register-schemas"
         private const val SCHEMA_REGISTERED_REGEX = ".*(?i)schemas registered.*"
         private const val AVRO_APP_NETWORK = "avro-app-network"
+
+        @JvmField
+        @RegisterExtension
+        val unhealthyContainerHealthchecks = UnhealthyContainerHealthcheckLogger(dockerClient = DockerClientFactory.instance().client())
     }
 
     private val schemaRegistry = schemaRegistry()
@@ -75,7 +85,7 @@ class ContractTestUsingTestContainer {
                     .withStartupTimeout(Duration.ofMinutes(3))
             )
             .withNetworkMode(AVRO_APP_NETWORK)
-            .withLogConsumer { print(it.utf8String) }
+            .withLogConsumer(Slf4jLogConsumer(logger))
     }
 
     @Test

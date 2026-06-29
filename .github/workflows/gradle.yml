@@ -60,7 +60,7 @@ jobs:
         with:
           name: ${{ matrix.os }}-${{ matrix.java }}-html-report
           path: build/reports/specmatic/async/test/html
-          
+
       - name: Upload CTRF Report
         uses: actions/upload-artifact@v6
         if: always() # Run even if tests fail
@@ -68,7 +68,7 @@ jobs:
           name: ctrf-report
           path: ${{ env.CTRF_REPORT_PATH }}
           retention-days: 5
-    
+
       # Display CTRF test results
       - name: Publish Test Results
         uses: ctrf-io/github-test-reporter@v1
