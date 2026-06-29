@@ -63,9 +63,9 @@ class UnhealthyContainerHealthcheckLogger(val dockerClient: DockerClient) : Invo
         try {
             return proceed()
         } catch (e: Throwable) {
-            val messages = logUnhealthyContainerHealthchecks()
-            if (messages.isEmpty()) throw e
-            throw UnhealthyContainerException(messages.joinToString("\n\n"), e)
+            val unhealthyContainerLogs = logUnhealthyContainerHealthchecks()
+            if (unhealthyContainerLogs.isEmpty()) throw e
+            throw UnhealthyContainerException(unhealthyContainerLogs.joinToString("\n\n"), e)
         }
     }
 
