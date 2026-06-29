@@ -47,6 +47,11 @@ dependencies {
 
 test {
     useJUnitPlatform()
+    testLogging {
+        // Pipe the forked test JVM's stdout/stderr (logback output, Testcontainers'
+        // compose logs) into the Gradle console; otherwise it only lands in the HTML report.
+        showStandardStreams = true
+    }
 }
 
 avro {
@@ -66,8 +71,6 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 configurations.all {
-    exclude group: 'ch.qos.logback', module: 'logback-classic'
-
     resolutionStrategy.capabilitiesResolution.withCapability('org.lz4:lz4-java') {
         select('at.yawk.lz4:lz4-java:1.11.0')
     }
