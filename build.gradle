@@ -48,9 +48,9 @@ dependencies {
 test {
     useJUnitPlatform()
     testLogging {
-        // Pipe the forked test JVM's stdout/stderr (logback output, Testcontainers'
-        // compose logs) into the Gradle console; otherwise it only lands in the HTML report.
         showStandardStreams = true
+        exceptionFormat = 'full'
+        showStackTraces = true
     }
 }
 

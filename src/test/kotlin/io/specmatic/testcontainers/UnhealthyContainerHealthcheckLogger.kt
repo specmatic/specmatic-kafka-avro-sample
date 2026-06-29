@@ -63,12 +63,13 @@ class UnhealthyContainerHealthcheckLogger(val dockerClient: DockerClient) : Invo
         try {
             return proceed()
         } catch (e: Throwable) {
-            logUnhealthyContainerHealthchecks().forEach(e::addSuppressed)
-            throw e
+            val messages = logUnhealthyContainerHealthchecks()
+            if (messages.isEmpty()) throw e
+            throw UnhealthyContainerException(messages.joinToString("\n\n"), e)
         }
     }
 
-    private fun logUnhealthyContainerHealthchecks(): List<Throwable> {
+    private fun logUnhealthyContainerHealthchecks(): List<String> {
         val unhealthy = dockerClient.listContainersCmd()
             .withShowAll(true)
             .withFilter("health", listOf("unhealthy"))
@@ -80,11 +81,11 @@ class UnhealthyContainerHealthcheckLogger(val dockerClient: DockerClient) : Invo
                 .joinToString("\n") { "[exit=${it.exitCodeLong}] ${it.output?.trim()}" }
             val message = "Healthcheck output for unhealthy container '$name':\n$healthLog"
             logger.error(message)
-            UnhealthyContainerException(message)
+            message
         }
     }
 
-    private class UnhealthyContainerException(message: String) : Exception(message) {
+    private class UnhealthyContainerException(message: String, cause: Throwable) : Exception(message, cause) {
         override fun fillInStackTrace(): Throwable = this
     }
 }
