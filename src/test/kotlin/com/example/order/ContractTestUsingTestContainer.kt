@@ -2,6 +2,7 @@ package com.example.order
 
 import io.specmatic.testcontainers.UnhealthyContainerHealthcheckLogger
 import org.assertj.core.api.Assertions.assertThat
+import org.awaitility.Awaitility.await
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -9,6 +10,8 @@ import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.extension.RegisterExtension
 import org.slf4j.LoggerFactory
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.test.web.client.TestRestTemplate
+import org.springframework.http.HttpStatus
 import org.testcontainers.DockerClientFactory
 import org.testcontainers.containers.BindMode
 import org.testcontainers.containers.ComposeContainer
@@ -20,7 +23,7 @@ import org.testcontainers.images.PullPolicy
 import java.io.File
 import java.time.Duration
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ContractTestUsingTestContainer {
     companion object {
@@ -37,6 +40,8 @@ class ContractTestUsingTestContainer {
 
     private val schemaRegistry = schemaRegistry()
 
+    private val client = TestRestTemplate()
+
     private fun schemaRegistry(): ComposeContainer {
         return ComposeContainer(DOCKER_COMPOSE_FILE)
             .withLocalCompose(true).waitingFor(
@@ -50,6 +55,9 @@ class ContractTestUsingTestContainer {
     @BeforeAll
     fun setup() {
         schemaRegistry.start()
+        await().atMost(Duration.ofSeconds(30)).until {
+            client.getForEntity("http://localhost:8080/actuator/health", String::class.java).statusCode == HttpStatus.OK
+        }
     }
 
     @AfterAll
@@ -78,6 +86,7 @@ class ContractTestUsingTestContainer {
                 "/usr/src/app/build/reports/specmatic",
                 BindMode.READ_WRITE,
             )
+            .withFileSystemBind("${System.getProperty("user.home")}/.specmatic", "/root/.specmatic", BindMode.READ_ONLY)
             .withEnv("SCHEMA_REGISTRY_URL", "http://schema-registry:8085")
             .withEnv("KAFKA_BROKER", "broker:9093")
             .waitingFor(
