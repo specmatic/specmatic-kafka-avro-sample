@@ -165,6 +165,7 @@ services:
       - ./specmatic.yaml:/usr/src/app/specmatic.yaml
       - ./api-specs:/usr/src/app/api-specs
       - ./build:/usr/src/app/build
+      - ${HOME}/.specmatic:/root/.specmatic:ro
     command: ["test"]
 
 networks:
