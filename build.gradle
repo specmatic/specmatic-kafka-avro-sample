@@ -11,6 +11,7 @@ plugins {
 def snapshotRepoUrl = project.findProperty('snapshotRepoUrl')
 
 repositories {
+    maven { url = uri("https://repo.specmatic.io/releases") }
     mavenLocal()
     maven {
         url "https://packages.confluent.io/maven/"
