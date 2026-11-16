@@ -1,4 +1,4 @@
-FROM eclipse-temurin:17.0.21_9-jre
+FROM eclipse-temurin:25.0.5_8-jre
 WORKDIR /app
 COPY ./build/libs/specmatic-kafka-avro-sample.jar /app/app.jar
 
